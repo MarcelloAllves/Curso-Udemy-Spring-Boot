@@ -1,0 +1,16 @@
+Criando a classe VendasApplication, dentro do pacote criado principal que foi criado dentro do pacote Java.
+
+package Principal.VendasApplication;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class VendasApplication {
+    public static void main(String[] args) {
+             SpringApplication.run(VendasApplication.class, args);
+    }
+
+}
+
+

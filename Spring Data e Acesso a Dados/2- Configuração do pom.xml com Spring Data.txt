@@ -1,0 +1,100 @@
+Pra gente começa a trabalhar com conexão à base de dados, a primeira dependência que precisamos adicionar no pom.xml 
+do projeto é:
+	<dependência>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependência>
+
+Essa dependência é o Starter para trabalhar com conexões a base de dados e operações, a infra estrutura para trabalhar 
+com base de dados.
+A versão sempre vai ser a versão do parent, dentro parent já tem todas as versões compatíveis da versão do Spring Boot.
+
+A segunda dependência a ser adicionada, é a dependência do driver do banco de dados. O banco de dados que iremos utilizar
+nesse projeto é o H2 DataBase:
+
+	<dependência>
+            <groupId>com.h2database</groupId>
+            <artefatoId>h2</artifactId>
+        </dependência>
+
+Esse banco de dados é um banco em memória, bem fácil pra gente não ter que ficar startando o banco de dados,
+fazendo toda a configuração, utilizaremos só em memória só pra estudar mesmo.
+
+Depois de declararmos essas dependências no pom.xml do projeto, a primeira coisa é obter uma conexão com esse 
+banco de dados com o H2 DataBase.
+A forma de obter uma conexão com um banco de dados serve para qualquer outro tipo banco, independente da plataforma, como
+vamos trabalhar com essa plataforma então colocaremos as propriedades específicas desse banco. 
+Essa configuração de conexão é feita dentro do application.properties no pacote resources. Caso ainda não exista é só 
+criar o arquivo com esse nome application.properties dentro do pacote resources no projeto.
+
+O arquivo application.properties ficará assim:
+
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=senha
+
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+Pra se conectar há um banco de dados precisamos de 4 configurações básicas:
+A conexão com a base de dados é configurada no Spring Boot por padrão através da seguinte
+convensão spring.datasource.
+1)- A url da base de dados, que nesse projeto estaremos utilizando assim: spring.datasource.url=jdbc:h2:mem:testdb,
+toda conexão utilizando Java utilizamos o jdbc, o "mem" significa que estamos utilizando o banco em memória, 
+e "testdb" é o nome do nosso banco de dados.
+
+2)- A segunda propriedade é o driverClassName, esse é o driver do H2 DataBase, org.h2.Driver 
+spring.datasource.driverClassName=org.h2.Driver
+
+3 e 4)- O terceiro e o quarto passo se trata do login com o banco de dados, desta forma:
+spring.datasource.username=sa
+spring.datasource.password=senha
+
+Essa configuração é a que irá estabelecer a conexão com base de dados, vai ler a url, vai pegar o username e o password 
+definidos no application.properties.
+
+Nesse arquivo configuramos o "dialeto" do banco de dados que estaremos trabalhando, onde o JPA trabalha independente do 
+banco de dados, então a gente só precisa passar para ele qual é o dialeto do banco que a gente está trabalhando.
+
+Então quando a gente trabalha com o JPA, não trabalhamos exatamente com SQL nativo, e sim com o mapeamento de entidades.
+Caso necessitarmos mudar de baco de dados é só modificar a configuração (dialeto do banco), no application.properties,
+fazendo o mínimo de alterações possíveis no nosso código.
+
+Essas duas propriedades:
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console,
+são referentes ao H2 DataBase, a primeira propriedade, spring.h2.console.habilitado=true habilita o console do H2 DataBase
+que é uma interface que vai permitir que a gente acesse a base em memória, consigamos inclusive fazer SQL,
+ver como é que está a estrutura do banco. A segunda propriedade spring.h2.console.path=/h2-console, será a url que 
+utilizaremos na aplicação pra poder acessar o banco de dados H2.
+
+Para testarmos essa conexão com o H2 DataBase, precisamos adicionar da dependência spring-boot-starter-web no pom.xml,
+caso ainda não esteja declarado, essa dependência é necessária porque a aplicação que configuramos, é uma aplicação web 
+e precisamos dele para rodar o console da H2.
+
+Iniciando a aplicação no IDE pra ver se está configurado corretamente.
+No browser digitar localhost:8080/h2-console
+
+Na guia que abrir verificar se as informações contidas na tela são as mesmas que foram definidas no application.properties,
+Drive Class: org.h2.Driver
+JDBC URL: jdbc:h2:mem:testdb
+User Name: sa
+Password: 
+Caso essas informações estejam corretas é só apertar em Connect.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

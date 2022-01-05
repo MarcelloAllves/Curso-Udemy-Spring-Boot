@@ -1,0 +1,190 @@
+Depois de criado as classes de modelo (Cliente, Produto, Pedido, ItemPedido), criaremos agora classes repositórios
+conhecidos também com DAOs (Data Acess Objects), que encapsulam todas as operações da base de dados referentes às
+classes ou entidades.
+
+O primeiro Dao a ser criado é para o repositório Cliente. 
+No pacote Principal criaremos um novo pacote com o nome de Repositorio, e dentro desse novo pacote criaremos uma classe
+com o nome de Clientes:
+
+package Principal.Repositorio;
+
+public class Clientes {
+
+
+}
+
+A primeira coisa a se fazer é dizer que essa classe é um repositório, para isso adicionaremos a anotação @Repository, 
+com isso o Spring registre essa classe num Contêiner como um repositório, uma classe que acessa o banco de dados.
+
+package Principal.Repositorio;
+
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class Clientes {
+
+}
+
+Quando uma classe possui a anotação @Repository, o Spring entende que essa classe faz opreações na base de dados, e 
+quase todas as Exceptions que ocorrerem na base de dados serão traduzidas para o usuário.
+
+Criaremos agora a operação de salvar cliente no nosso bando de dados.
+No Spring JPA já possui uma classe chamada de JdbcTemplate que já vem com a configuração de acesso ao banco configurada, e
+nessa classe iremos anota-la com @Autowired, para que o Spring Boot injete uma instância do Jdbc Template.
+A classe JdbcTemplate possui alguns métodos que permite que a gente faça operações na base de dados. 
+Para salvar os dados no nosso banco, vamos precisar de um Script SQL, o jdbc Template trabalha com esse SQL nativo,
+private static String INSERT = "insert into cliente (nome) values (?)"; .
+
+package Principal.Repositorio;
+
+import Principal.Entity.Cliente;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class Clientes {
+
+    private static String INSERT = "insert into cliente (nome) values (?)";
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+
+    public Cliente salvar(Cliente cliente){
+        jdbcTemplate.update(INSERT, new Object[]{cliente.getNome()});
+        return cliente;
+
+    }
+
+}
+
+Na classe VendasApplication iremos adicionar as linhas de código descritas abaixo, para testarmos nossa inserção de 
+dados no nosso banco.
+@Bean
+    public CommandLineRunner init(@Autowired Clientes clientes){
+        return args -> {
+            Cliente cliente = new Cliente();
+            cliente.setNome("Marcelo");
+            clientes.salvar(cliente);
+        };
+    }
+Desta forma nossa classe VendasApplication ficará assim:
+
+package Principal.Main;
+
+import Principal.Entity.Cliente;
+import Principal.Repositorio.Clientes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+
+public class VendasApplication {
+
+    @Bean
+    public CommandLineRunner init(@Autowired Clientes clientes){
+        return args -> {
+            Cliente cliente = new Cliente();
+            cliente.setNome("Marcelo");
+            clientes.salvar(cliente);
+        };
+    }
+    public static void main(String[] args) {
+             SpringApplication.run(VendasApplication.class, args);
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

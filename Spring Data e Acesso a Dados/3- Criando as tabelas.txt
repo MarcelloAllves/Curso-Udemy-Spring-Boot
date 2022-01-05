@@ -1,0 +1,56 @@
+No pacote resources do nosso projeto, criar um arquivo com esse nome, data.sql, tem que ser exatamente com esse nome.
+Depois de criado inserir as tabelas e seus atributos, ficando assim nosso arquivo data.sql:
+CREATE TABLE CLIENTE (
+    ID INTEGER PRIMARY KEY AUTO_INCREMENT,
+    NOME VARCHAR(100)
+);
+
+CREATE TABLE PRODUTO (
+    ID INTEGER PRIMARY KEY AUTO_INCREMENT,
+    DESCRICAO VARCHAR(100),
+    PRECO_UNITARIO NUMERIC(20,2)
+);
+
+CREATE TABLE PEDIDO (
+    ID INTEGER PRIMARY KEY AUTO_INCREMENT,
+    CLIENTE_ID INTEGER REFERENCES CLIENTE (ID),
+    DATA_PEDIDO TIMESTAMP,
+    TOTAL NUMERIC(20,2)
+);
+
+CREATE TABLE ITEM_PEDIDO (
+    ID INTEGER PRIMARY KEY AUTO_INCREMENT,
+    PEDIDO_ID INTEGER REFERENCES PEDIDO (ID),
+    PRODUTO_ID INTEGER REFERENCES PRODUTO (ID),
+    QUANTIDADE INTEGER
+);
+
+Temos que criar esse arquivo porque a cada vez que subirmos nossa aplicação não haja a necessidade de criarmos essas
+tabelas manualmente no console do H2, lembrando que esse banco de dados seria "deletado" toda vez que encerramos 
+a aplicação. 
+
+O próximo passo é criar as classes que irão representar cada tabela do nosso banco.
+As classes criadas terão o mesmo nome e os mesmos atibutos das tabelas criadas.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
